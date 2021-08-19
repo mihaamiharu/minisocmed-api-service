@@ -49,4 +49,24 @@ describe User do
       end
     end
   end
+
+  describe '#create_user' do
+    context 'assign with valid params' do
+      it 'should save user data' do
+        user = User.new(
+          username: 'mihaamiharu',
+          email: 'mihaamiharu.com',
+          bio: 'au ah gelap'
+        )
+
+       
+        query = "INSERT INTO user (username, email, bio) VALUES ('#{user.username}','#{user.email}','#{user.bio}')"
+        mock = double()
+        allow(Mysql2::Client).to receive(:new).and_return(mock)
+        expect(mock).to receive(:query).with(query)
+
+        user.create_user
+      end
+    end
+  end
 end
