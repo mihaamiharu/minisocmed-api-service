@@ -1,26 +1,22 @@
 require_relative '../../models/user'
 describe User do
+  before :each do
+    @user_data = User.new(
+      username: 'mihaamiharu',
+      email: 'mihaa@miharu.com',
+      bio: 'au ah gelap'
+    )
+  end
   describe '.initialize' do
     it 'cannot be nil' do
-      user = User.new(
-        username: 'mihaamiharu',
-        email: 'mihaa@miharu.com',
-        bio: 'au ah gelap'
-      )
-      expect(user).not_to be_nil
+      expect(@user_data).not_to be_nil
     end
   end
 
   describe '#valid?' do
     context 'assign with valid params' do
       it 'should return true' do
-        user = User.new(
-          username: 'mihaamiharu',
-          email: 'mihaa@miharu.com',
-          bio: 'au ah gelap'
-        )
-
-        expect(user.valid?).to eq(true)
+        expect(@user_data.valid?).to eq(true)
       end
     end
 
@@ -58,10 +54,8 @@ describe User do
           email: 'mihaamiharu.com',
           bio: 'au ah gelap'
         )
-
-       
         query = "INSERT INTO user (username, email, bio) VALUES ('#{user.username}','#{user.email}','#{user.bio}')"
-        mock = double()
+        mock = double
         allow(Mysql2::Client).to receive(:new).and_return(mock)
         expect(mock).to receive(:query).with(query)
 
