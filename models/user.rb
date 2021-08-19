@@ -1,3 +1,4 @@
+require_relative '../db/db_connection'
 class User
   def initialize(params)
     @username = params[:username]
