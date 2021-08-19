@@ -1,8 +1,8 @@
 class User
   def initialize(params)
     @username = params[:username]
-    @bio = params[:bio]
     @email = params[:email]
+    @bio = params[:bio]
   end
 
   def valid?
