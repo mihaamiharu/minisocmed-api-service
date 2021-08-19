@@ -6,7 +6,7 @@ class User
   end
 
   def valid?
-    
+    return false if @username.nil? || @email.nil?  || !@email.match(/\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
     true
   end
 end
