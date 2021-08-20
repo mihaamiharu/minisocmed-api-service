@@ -54,13 +54,42 @@ describe User do
           email: 'mihaamiharu.com',
           bio: 'au ah gelap'
         )
+
+        expected_result = {
+          'user_id' => 1,
+          'username' => 'mihaamiharu',
+          'email' => 'mihaa@miharu.com',
+          'bio' => 'Main game mulu'
+        }
+
         query = "INSERT INTO user (username, email, bio) VALUES ('#{user.username}','#{user.email}','#{user.bio}')"
+        query_last = "SET @id = LAST_INSERT_ID();"
+        query_response = "SELECT * FROM users WHERE user_id = @id"
         mock = double
         allow(Mysql2::Client).to receive(:new).and_return(mock)
         expect(mock).to receive(:query).with(query)
+        expect(mock).to receive(:query).with(query_last)
+        expect(mock).to receive(:query).with(query_response).and_return([expected_result])
 
         user.create_user
       end
+    end
+  end
+
+  describe 'find_user' do
+    it 'should return a new data user' do
+      query = "SELECT * FROM user ORDER BY user_id DESC LIMIT BY 1"
+      expected_result = {
+        'user_id' => 1,
+        'username' => 'mihaamiharu',
+        'email' => 'mihaa@miharu.com',
+        'bio' => 'Main game mulu'
+      }
+
+      mock = double
+      allow(Mysql2::Client).to receive(:new).and_return(mock)
+      expect(mock).to receive(:query).with(query).and_return([expected_result])
+      @user_data.find_user
     end
   end
 end
