@@ -18,7 +18,7 @@ class Post
   def posts
     return false unless valid?
     client = create_db_client
-    query = client.query("INSERT INTO post (username, caption) VALUES ('#{@username}', '#{@caption}')")
+    query = client.query("INSERT INTO post (username, caption, attachment, tag_id) VALUES ('#{@username}', '#{@caption}', '#{@attachment}', '#{@tag_id}')")
     201 if valid?
   end
 
@@ -31,7 +31,7 @@ class Post
 
   def create_comment
     client = create_db_client
-    query = client.query("INSERT INTO post (username, caption, attachment) VALUES 
+    query = client.query("INSERT INTO post (user_id, caption, attachment, tag_id) VALUES 
     ('#{@username}', '#{@caption}', '#{@attachment}')")
     201 if valid?
   end

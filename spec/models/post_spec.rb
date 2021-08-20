@@ -4,26 +4,26 @@ describe Post do
   before :each do
     @post_data = Post.new(
       post_id: 1,
-      username: 'mihaamiharu',
+      user_id: 1,
       caption: 'Main #game mulu',
       attachment: nil,
       tag_id: 1,
-      timestamp: '2021-08-17 07:00:13'
+      created_at: '2021-08-17 07:00:13'
     )
 
     @expected_result = {
         'post_id' => 1,
-        'username' => 'mihaamiharu',
+        'user_id' => 1,
         'caption' => 'Main #game mulu',
         'attachment' => nil,
         'tag_id' => 1,
-        'timestamp' => '2021-08-17 07:00:13'
+        'created_at' => '2021-08-17 07:00:13'
     }
   end
   describe '.initialize' do
     it 'cannot be nil' do
       post_data = Post.new(
-        username: 'mihaamiharu',
+        user_id: 1,
         caption: 'Main game mulu'
       )
       expect(post_data).not_to be_nil
@@ -34,7 +34,7 @@ describe Post do
     context 'assigned with valid params' do
       it 'should return true' do
         post_data = Post.new(
-          username: 'mihaamiharu',
+          user_id: 1,
           caption: 'Main game mulu'
         )
         expect(post_data.valid?).to eq(true)
@@ -44,7 +44,7 @@ describe Post do
     context 'when caption is empty' do
       it 'should return false' do
         post_data = Post.new(
-          username: 'mihaamiharu',
+          user_id: 1,
           caption: nil,
         )
         expect(post_data.valid?).to eq(false)
@@ -56,8 +56,7 @@ describe Post do
     describe 'when assigned with valid params' do
       it 'should create new post' do
         mock = double
-        query = "INSERT INTO post (username, caption, attachment, tag_id) VALUES 
-        ('#{@post_data.username}', '#{@post_data.caption}', '#{@post_data.attachment}, '#{@post_data.tag_id}')"
+        query = "INSERT INTO post (username, caption, attachment, tag_id) VALUES ('#{@post_data.username}', '#{@post_data.caption}', '#{@post_data.attachment}', '#{@post_data.tag_id}')"
         allow(Mysql2::Client).to receive(:new).and_return(mock)
         expect(mock).to receive(:query).with(query).and_return(201)
 
