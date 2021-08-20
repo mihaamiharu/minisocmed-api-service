@@ -5,5 +5,7 @@ class Post
     @timestamp = params[:timestamp] || Time.now
   end
 
-  
+  def valid?
+    true
+  end
 end
