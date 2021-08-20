@@ -40,8 +40,8 @@ describe Post do
           post_id: 1,
           username: 'mihaamiharu',
           caption: 'Main game mulu',
-          attachment: nil,
-          timestamp: Time.now
+          timestamp: Time.now,
+          attachment: nil
         )
 
         mock = double
@@ -51,6 +51,33 @@ describe Post do
 
         post_data.posts
       end
+    end
+  end
+
+  context '#find_post' do
+    it 'should return new post' do
+      query = 'SELECT * FROM post ORDER BY post_id DESC LIMIT 1'
+
+      post_data = Post.new(
+        post_id: 1,
+        username: 'mihaamiharu',
+        caption: 'Main game mulu',
+        timestamp: Time.now,
+        attachment: nil
+      )
+
+      hash_response = {
+        'post_id' => 1,
+        'username' => 'mihaamiharu',
+        'caption' => 'Main game mulu',
+        'timestamp' => '2021-08-17 07:00:13',
+        'attachment' => nil
+      }
+      mock = double
+      allow(Mysql2::Client).to receive(:new).and_return(mock)
+      expect(mock).to receive(:query).with(query).and_return([hash_response])
+
+      post_data.find_post
     end
   end
 end
