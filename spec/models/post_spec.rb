@@ -56,7 +56,7 @@ describe Post do
     describe 'when assigned with valid params' do
       it 'should create new post' do
         mock = double
-        query = "INSERT INTO post (username, caption, attachment, tag_id) VALUES ('#{@post_data.username}', '#{@post_data.caption}', '#{@post_data.attachment}', '#{@post_data.tag_id}')"
+        query = "INSERT INTO post (user_id, caption, attachment, tag_id) VALUES (#{@post_data.user_id}, '#{@post_data.caption}', '#{@post_data.attachment}', '#{@post_data.tag_id}')"
         allow(Mysql2::Client).to receive(:new).and_return(mock)
         expect(mock).to receive(:query).with(query).and_return(201)
 
@@ -78,8 +78,8 @@ describe Post do
   describe '#create_comment' do
     context 'given valid params' do
       it 'should write comment on a post' do
-        query = "INSERT INTO post (username, caption, attachment) VALUES 
-        ('#{@post_data.username}', '#{@post_data.caption}','#{@post_data.attachment}')"
+        query = "INSERT INTO post (user_id, content, attachment, tag_id) VALUES 
+        (#{@post_data.user_id}, '#{@post_data.caption}', '#{@post_data.attachment}', '#{@post_data.tag_id})"
         mock = double
         allow(mock).to receive(:last_id).and_return(1)
         expect(mock).to receive(:query).with(mock).and_return(200)

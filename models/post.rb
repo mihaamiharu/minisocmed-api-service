@@ -2,7 +2,7 @@ require_relative '../db/db_connection'
 require_relative '../models/hashtag'
 
 class Post
-  attr_reader :username, :caption, :attachment, :tag_id
+  attr_reader :user_id, :caption, :attachment, :tag_id
   def initialize(params)
     @username = params[:username],
     @caption = params[:caption],
@@ -18,7 +18,7 @@ class Post
   def posts
     return false unless valid?
     client = create_db_client
-    query = client.query("INSERT INTO post (username, caption, attachment, tag_id) VALUES ('#{@username}', '#{@caption}', '#{@attachment}', '#{@tag_id}')")
+    query = client.query("INSERT INTO post (user_id, caption, attachment, tag_id) VALUES (#{@user_id}, '#{@caption}', '#{@attachment}', '#{@tag_id}')")
     201 if valid?
   end
 
@@ -31,8 +31,8 @@ class Post
 
   def create_comment
     client = create_db_client
-    query = client.query("INSERT INTO post (user_id, caption, attachment, tag_id) VALUES 
-    ('#{@username}', '#{@caption}', '#{@attachment}')")
+    query = client.query("INSERT INTO post (user_id, content, attachment, tag_id) VALUES 
+    (#{@user_id}, '#{@caption}', '#{@attachment}', #{@tag_id})")
     201 if valid?
   end
 
