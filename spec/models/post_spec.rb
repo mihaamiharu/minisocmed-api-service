@@ -58,6 +58,7 @@ describe Post do
         mock = double
         query = "INSERT INTO post (user_id, caption, attachment, tag_id) VALUES (#{@post_data.user_id}, '#{@post_data.caption}', '#{@post_data.attachment}', #{@post_data.tag_id})"
         allow(Mysql2::Client).to receive(:new).and_return(mock)
+        allow(mock).to receive(:last_id).and_return(1)
         expect(mock).to receive(:query).with(query).and_return(201)
 
         mock_hashtag = double
