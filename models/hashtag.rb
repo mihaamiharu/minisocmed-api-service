@@ -15,7 +15,7 @@ class Hashtag
 
   def find_hashtag
     client = create_db_client
-    find_hashtag = client.query("SELECT hashtag_id FROM hashtag WHERE hashtag.`name` LIKE '%#{name}%")
+    find_hashtag = client.query("SELECT hashtag_id FROM hashtag WHERE hashtag.`name` LIKE '%#{name}%'")
 
     body = find_hashtag
   end
