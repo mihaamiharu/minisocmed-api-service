@@ -1,52 +1,67 @@
 require_relative '../../models/post_tags'
 
 describe PostTags do
-  describe '.initialize' do
-    it 'cannot be nil' do
-      post_tag = PostTags.new(
-        name: 'gamemulu'
-      )
-      expect(post_tag).not_to be_nil
+  before :each do
+    @stub_client = double()
+    @post_hashtags = PostTags.new(name: 'gamemulu')
+    @response = {
+      'post_id' => 1,
+      'username' => 'mihaamiharu',
+      'caption' => 'kamu main #gamemulu',
+      'attachment' => nil,
+      'tag_id' => nil,
+      'created_at' => '2021-08-15 00:51:03',
+      'name' => 'gamemulu'
+    }
+    allow(Mysql2::Client).to receive(:new).and_return(@stub_client)
+  end
+
+  describe 'get post contain hashtag' do
+    it 'should return response by hashtag name post' do
+      stub_query = "SELECT post.post_id, user.username, post.caption, post.attachment, post.tag_id ,post.created_at,hashtag.`name`
+            FROM post
+            LEFT JOIN post_tags ON post.post_id = post_tags.post_id
+            LEFT JOIN hashtag ON hashtag.hashtag_id = post_tags.hashtag_id
+            LEFT JOIN user ON user.user_id = post.user_id
+            WHERE hashtag.`name` LIKE '%#{@post_hashtags.name}%'"
+
+      expect(@stub_client).to receive(:query).with(stub_query).and_return([@response])
+
+      @post_hashtags.get_post_contain_hashtag
     end
   end
 
-  describe '#find_post_with_hashtag' do
-    context 'when post is found' do
-      it 'does return response by hashtag name' do
-        hashtag = PostTags.new(name: 'gamemulu')
-        query = "SELECT post.post_id, user.username, post.caption, post.attachment, post.tag_id, post.created_at, hashtag.`name`
-        FROM post
-        LEFT JOIN post_tags ON post.post_id = post_tags.post_id
-        LEFT JOIN hashtag ON hashtag.hashtag_id = post_tags.hashtag_id
-        LEFT JOIN user ON user.user_id = post.user_id
-        WHERE hashtag.`name` LIKE '%#{hashtag.name}%'"
-  
-        expected_result = {
-          'post_id' => 1,
-          'username' => 'mihaamiharu',
-          'caption' => 'kenapa kamu main #gamemulu',
-          'attachment' => nil,
-          'tag_id' => nil,
-          'created_at' => '2021-08-21 00:19:30',
-          'name' => 'gamemulu'
-        }
-        mock = double
-        allow(Mysql2::Client).to receive(:new).and_return(mock)
-        expect(mock).to receive(:query).with(query).and_return([expected_result])
-  
-        hashtag.find_post_with_hashtag
-      end
-    end
-  end
+  describe 'get list trending hashtag' do
+    it 'should return response by hashtag name with count' do
+      response = {
+        'hashtag_id' => 1,
+        'count' => 10,
+        'name' => 'gamemulu'
+      }
 
-  describe '#find_top_trending' do
-    context 'when trending is found' do
-      it 'does return response for trending hashtag' do
-        hashtag = PostTags.new(
+      query = 
+            "
+            SELECT
+                hashtag.hashtag_id,
+                COUNT(hashtag.hashtag_id) AS count,
+                hashtag. `name`
+            FROM
+                post
+                LEFT JOIN post_tags ON post.post_id = post_tags.post_id
+                LEFT JOIN hashtag ON hashtag.hashtag_id = post_tags.hashtag_id
+                LEFT JOIN user ON user.user_id = post.user_id
+            WHERE
+                post.created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)
+            GROUP BY
+                hashtag.`name`
+            ORDER BY
+                count DESC
+            LIMIT 5
+            "
 
-        )
-        hashtag.find_top_trending
-      end
+      expect(@stub_client).to receive(:query).with(query).and_return([response])
+
+      post_hashtag = PostTags.get_list_trending_hashtag
     end
   end
 end
