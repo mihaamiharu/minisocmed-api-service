@@ -20,4 +20,19 @@ class Hashtag
     body = find_hashtag
   end
 
+  def create_hashtag 
+    return false unless valid?
+
+    body = []
+    client = create_db_client
+    query = client.query("INSERT INTO hashtag (name) VALUES ('#{@name[0]}')")
+    query_lastid = client.query('SET @id = LAST_INSERT_ID();')
+    query_response = client.query('SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id')
+
+    query_response.each do |response|
+      return response['hashtag_id']
+    end
+  end
+
+
 end

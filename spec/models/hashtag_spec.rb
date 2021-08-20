@@ -49,4 +49,18 @@ describe Hashtag do
       @hashtag.find_hashtag
     end
   end
+
+  describe '#create_hashtag' do
+    it 'should create hashtag' do
+      query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
+      query_lastid = "SET @id = LAST_INSERT_ID();"
+      query_response = "SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id"
+
+      expect(@mock).to receive(:query).with(query)
+      expect(@mock).to receive(:query).with(query_lastid)
+      expect(@mock).to receive(:query).with(query_response).and_return([{}])
+
+      @hashtag.create_hashtag
+    end
+  end
 end
