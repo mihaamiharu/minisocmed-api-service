@@ -8,7 +8,7 @@ class Post
   end
 
   def valid?
-    return false if @caption.nil?
+    return false if @caption.nil? || @caption.length > 1000
     true
   end
 
