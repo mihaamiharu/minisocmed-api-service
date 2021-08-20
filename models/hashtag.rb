@@ -2,7 +2,7 @@ require_relative '../db/db_connection'
 
 class Hashtag 
 
-  attr_reader :id, :name
+  attr_reader :hashtag_id, :name
   def initialize(params)
     @hashtag_id = params[:hashtag_id],
     @name = params[:name]
@@ -32,6 +32,12 @@ class Hashtag
     query_response.each do |response|
       return response['hashtag_id']
     end
+  end
+
+  def save_hashtag(post_id)
+    client = create_db_client
+
+    query = client.query("INSERT INTO post_tags (hashtag_id,post_id) VALUES (#{create_hashtag},#{post_id})")
   end
 
 

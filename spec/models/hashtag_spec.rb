@@ -65,4 +65,26 @@ describe Hashtag do
       end
     end
   end
+
+  describe '#save_hashtag' do
+    context 'when assign with valid params' do
+      it 'does save thread' do
+      query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
+      query_lastid = "SET @id = LAST_INSERT_ID();"
+      query_selectid = "SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id"
+      query_response = "INSERT INTO post_tags (hashtag_id,post_id) VALUES (#{@hashtag.hashtag_id},1)"
+
+      expected_result = [{
+        'hashtag_id' => 1
+      }]
+
+      expect(@mock).to receive(:query).with(query)
+      expect(@mock).to receive(:query).with(query_lastid)
+      expect(@mock).to receive(:query).with(query_selectid).and_return(expected_result)
+      expect(@mock).to receive(:query).with(query_response)
+
+      @hashtag.save_hashtag(1)
+      end
+    end
+  end
 end
