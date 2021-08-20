@@ -4,7 +4,7 @@ require_relative '../models/hashtag'
 class Post
   attr_reader :user_id, :caption, :attachment, :tag_id
   def initialize(params)
-    @username = params[:username],
+    @user_id = params[:user_id],
     @caption = params[:caption],
     @attachment = params[:attachment],
     @tag_id = params[:tag_id]
@@ -18,22 +18,20 @@ class Post
   def posts
     return false unless valid?
     client = create_db_client
-    query = client.query("INSERT INTO post (user_id, caption, attachment, tag_id) VALUES (#{@user_id}, '#{@caption}', '#{@attachment}', '#{@tag_id}')")
-    201 if valid?
+    client.query("INSERT INTO post (user_id, caption, attachment, tag_id) VALUES (#{@user_id}, '#{@caption}', '#{@attachment}', #{@tag_id})")
+    hashtag = check_hashtag
+    hashtag.each do |data|
+      hash = Hashtag.new(name: data)
+      hash.save_hashtag(client.last_id)
+    end
+    return 201 if valid?
   end
 
   def find_post
     client = create_db_client
-    find_post = client.query('SELECT * FROM post ORDER BY post_id DESC LIMIT 1')
+    find_post = client.query('SELECT * FROM post ORDER BY post_id DESC LIMIT 0,1')
 
-    body = find_post
-  end
-
-  def create_comment
-    client = create_db_client
-    query = client.query("INSERT INTO post (user_id, content, attachment, tag_id) VALUES 
-    (#{@user_id}, '#{@caption}', '#{@attachment}', #{@tag_id})")
-    201 if valid?
+    data = find_post
   end
 
   def check_hashtag
