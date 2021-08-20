@@ -16,7 +16,7 @@ class User
     client = create_db_client
     query = client.query("INSERT INTO user (username, email, bio) VALUES ('#{@username}','#{@email}','#{@bio}')")
     query_last = client.query('SET @id = LAST_INSERT_ID();')
-    query_response = client.query('SELECT * FROM users WHERE user_id = @id')
+    query_response = client.query('SELECT * FROM user WHERE user_id = @id')
     return 200 if valid?
   end
 

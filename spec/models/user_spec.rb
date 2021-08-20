@@ -64,7 +64,7 @@ describe User do
 
         query = "INSERT INTO user (username, email, bio) VALUES ('#{user.username}','#{user.email}','#{user.bio}')"
         query_last = "SET @id = LAST_INSERT_ID();"
-        query_response = "SELECT * FROM users WHERE user_id = @id"
+        query_response = "SELECT * FROM user WHERE user_id = @id"
         mock = double
         allow(Mysql2::Client).to receive(:new).and_return(mock)
         expect(mock).to receive(:query).with(query)
