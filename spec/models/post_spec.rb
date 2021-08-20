@@ -25,6 +25,7 @@ describe Post do
         expect(post_data.valid?).to eq(true)
       end
     end
+<<<<<<< HEAD
 
     context 'when caption is empty' do
       it 'should return false' do
@@ -35,5 +36,7 @@ describe Post do
         expect(post_data.valid?).to eq(false)
       end
     end
+=======
+>>>>>>> c3baee792d9588f5cbb1bfe8c214b61d4f1e19ae
   end
 end

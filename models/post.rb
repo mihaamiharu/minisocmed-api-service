@@ -7,7 +7,10 @@ class Post
   end
 
   def valid?
+<<<<<<< HEAD
     return false if @caption.nil?
+=======
+>>>>>>> c3baee792d9588f5cbb1bfe8c214b61d4f1e19ae
     true
   end
 end
