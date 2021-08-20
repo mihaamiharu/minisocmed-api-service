@@ -4,5 +4,9 @@ class Hashtag
     @name = params[:name]
   end
 
-  
+  def valid?
+    return false if @name.nil?
+    true
+  end
+
 end
