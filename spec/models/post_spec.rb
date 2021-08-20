@@ -6,16 +6,18 @@ describe Post do
       post_id: 1,
       username: 'mihaamiharu',
       caption: 'Main #game mulu',
-      timestamp: '2021-08-17 07:00:13',
-      attachment: nil
+      attachment: nil,
+      tag_id: 1,
+      timestamp: '2021-08-17 07:00:13'
     )
 
     @expected_result = {
         'post_id' => 1,
         'username' => 'mihaamiharu',
         'caption' => 'Main #game mulu',
-        'timestamp' => '2021-08-17 07:00:13',
-        'attachment' => nil
+        'attachment' => nil,
+        'tag_id' => 1,
+        'timestamp' => '2021-08-17 07:00:13'
     }
   end
   describe '.initialize' do
@@ -54,7 +56,8 @@ describe Post do
     describe 'when assigned with valid params' do
       it 'should create new post' do
         mock = double
-        query = "INSERT INTO post (username, caption) VALUES ('#{@post_data.username}', '#{@post_data.caption}')"
+        query = "INSERT INTO post (username, caption, attachment, tag_id) VALUES 
+        ('#{@post_data.username}', '#{@post_data.caption}', '#{@post_data.attachment}, '#{@post_data.tag_id}')"
         allow(Mysql2::Client).to receive(:new).and_return(mock)
         expect(mock).to receive(:query).with(query).and_return(201)
 
@@ -69,7 +72,6 @@ describe Post do
       mock = double
       allow(Mysql2::Client).to receive(:new).and_return(mock)
       expect(mock).to receive(:query).with(query).and_return([@expected_result])
-
       @post_data.find_post
     end
   end
@@ -82,6 +84,11 @@ describe Post do
         mock = double
         allow(mock).to receive(:last_id).and_return(1)
         expect(mock).to receive(:query).with(mock).and_return(200)
+
+        mock_hashtag = double
+        allow(Hashtag).to receive(:new).and_return(mock_hashtag)
+        allow(mock_hashtag).to receive(:create_hashtag)
+        allow(mock_hashtag).to receive(:save_hashtag)
         @post_data.create_comment
       end
     end
