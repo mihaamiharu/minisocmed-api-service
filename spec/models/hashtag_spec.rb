@@ -4,13 +4,13 @@ describe Hashtag do
   before :each do
     @hashtag = Hashtag.new(
       hashtag_id: 1,
-      name: 'semangat',
+      name: 'Main #game mulu',
       created_at: '2021-08-21 10:19:23'
     )
 
     @expected_result = {
       'hashtag_id' => 1,
-      'name' => 'semangat',
+      'name' => 'Main #game mulu',
       'created_at' => '2021-08-21 10:19:23'
     }
 
@@ -21,7 +21,7 @@ describe Hashtag do
     it 'cannot be nil' do
       hashtag_data = Hashtag.new(
         hashtag_id: 1,
-        name: 'semangat'
+        name: '#game'
       )
       expect(hashtag_data).not_to be_nil
     end
@@ -32,7 +32,7 @@ describe Hashtag do
       it 'should return true' do
         hashtag_data = Hashtag.new(
           hashtag_id: 1,
-          name: 'semangat'
+          name: '#game'
         )
         expect(hashtag_data.valid?).to eq(true)
       end
@@ -51,16 +51,18 @@ describe Hashtag do
   end
 
   describe '#create_hashtag' do
-    it 'should create hashtag' do
-      query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
-      query_lastid = "SET @id = LAST_INSERT_ID();"
-      query_response = "SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id"
+    context 'when assign with valid params' do
+      it 'should create hashtag' do
+        query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
+        query_lastid = "SET @id = LAST_INSERT_ID();"
+        query_response = "SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id"
 
-      expect(@mock).to receive(:query).with(query)
-      expect(@mock).to receive(:query).with(query_lastid)
-      expect(@mock).to receive(:query).with(query_response).and_return([{}])
+        expect(@mock).to receive(:query).with(query)
+        expect(@mock).to receive(:query).with(query_lastid)
+        expect(@mock).to receive(:query).with(query_response).and_return([{}])
 
-      @hashtag.create_hashtag
+        @hashtag.create_hashtag
+      end
     end
   end
 end
