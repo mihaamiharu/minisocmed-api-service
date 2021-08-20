@@ -32,4 +32,25 @@ describe Post do
       end
     end
   end
+
+  describe '#post' do
+    describe 'when assigned with valid params' do
+      it 'should create new post' do
+        post_data = Post.new(
+          post_id: 1,
+          username: 'mihaamiharu',
+          caption: 'Main game mulu',
+          attachment: nil,
+          timestamp: Time.now
+        )
+
+        mock = double
+        query = "INSERT INTO post (username, caption) VALUES ('#{post_data.username}', '#{post_data.caption}')"
+        allow(Mysql2::Client).to receive(:new).and_return(mock)
+        expect(mock).to receive(:query).with(query).and_return(201)
+
+        post_data.posts
+      end
+    end
+  end
 end
