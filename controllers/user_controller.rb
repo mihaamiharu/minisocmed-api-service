@@ -15,7 +15,11 @@ class UserController
         'body' => body
       }
     else
-      
+      {
+        'message' => 'Failed',
+        'status' => 400,
+        'method' => 'POST'
+      }
     end
   end
 end
