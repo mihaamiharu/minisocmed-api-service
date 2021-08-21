@@ -20,10 +20,10 @@ You need to have a Virtual Machine to Run Linux, or I recommend you to use WSL a
 ## Installation 
 1. Fork or clone this repository to your local machine
 2. Move to the root directory of this folder
-3. Install Dependencies using bundle install
-4. Change .env with your desired choice
-5. Run source .env
-6. Run the apps with ruby main.rb
+3. Install Dependencies using **bundle install**
+4. Change **.env** with your desired choice
+5. Run **source .env**
+6. Run the apps with **ruby main.rb**
 
 ## Run Unit Testing
 1. Move to the root folder of this directory
