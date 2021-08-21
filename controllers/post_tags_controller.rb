@@ -9,11 +9,20 @@ class PostTagsController
       array.push(res)
     end
 
-    {
-      'message' => 'Success',
-      'status' => 200,
-      'method' => 'POST',
-      'data' => array
-    }
+    if array.empty?
+      {
+        'message' => 'Success',
+        'status' => 200,
+        'method' => 'POST',
+        'data' => []
+      } else
+      {
+        'message' => 'Success',
+        'status' => 200,
+        'method' => 'POST',
+        'data' => array
+      }
+    end
+    
   end
 end

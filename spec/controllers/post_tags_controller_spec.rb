@@ -30,4 +30,27 @@ describe PostTagsController do
       expect(result).to eq(expected_response)
     end
   end
+
+  describe 'when post dont have tags' do
+    it 'should response with a 404' do
+      params = {
+        'name' => 'Au ah gelap'
+      }
+
+      expected_response = {
+        'message' => 'Success',
+        'status' => 200,
+        'method' => 'POST',
+        'data' => []
+      }
+
+      mock = double
+      allow(mock).to receive(:find_post_contain_hashtag).and_return([])
+      allow(PostTags).to receive(:new).and_return(mock)
+
+      controller = PostTagsController.new
+      result = controller.find_post_tags(params)
+      expect(result).to eq(expected_response)
+    end
+  end
 end
