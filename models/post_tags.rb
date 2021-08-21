@@ -18,8 +18,4 @@ class PostTags
 
     find_post_with_hashtag
   end
-
-  def find_top_trending
-    
-  end
 end
