@@ -75,7 +75,7 @@ describe PostController do
 
       it 'should not save file when attachment is nil' do
         mock_attachment = double
-        allow(mock_attachment).to receive([]).with('filename').and_return('image.jpeg')
+        allow(mock_attachment).to receive([]).with('filename').and_return('image.jpg')
         allow(mock_attachment).to receive(:key?).with('filename').and_return(false)
 
         mock_file = double
