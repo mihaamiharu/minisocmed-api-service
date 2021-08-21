@@ -51,5 +51,27 @@ describe PostController do
         result = @controller.create_post(post_data)
       end
     end
+
+    context 'when assigned by invalid params' do
+      it 'should return a 401' do
+        expected_response = {
+          'message' => 'Failed',
+          'status' => 401,
+          'method' => 'POST',
+        }
+
+        post_data = {
+          'user_id' => 1,
+          'caption' => nil
+        }
+        mock = double
+        allow(Post).to receive(:new).with(post_data).and_return(mock)
+        allow(mock).to receive(:find_post).and_return([])
+        allow(mock).to receive(:posts).and_return(false)
+
+        result = @controller.create_post(post_data)
+        expect(result).to eq(expected_response)
+      end
+    end
   end
 end

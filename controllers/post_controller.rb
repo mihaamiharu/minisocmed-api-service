@@ -1,5 +1,6 @@
 require_relative '../models/post'
 
+
 class PostController
   def create_post(params)
     array = []
@@ -23,6 +24,12 @@ class PostController
         'status' => 201,
         'method' => 'POST',
         'data' => array
+      }
+    else
+      {
+        'message' => 'Failed',
+        'status' => 401,
+        'method' => 'POST'
       }
     end
   end
