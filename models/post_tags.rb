@@ -18,4 +18,21 @@ class PostTags
 
       find_post_contain_hashtag
   end
+
+  def self.list_trending_hashtag
+    client = create_db_client
+    query = "SELECT hashtag.hashtag_id, COUNT(hashtag.hashtag_id) AS count, hashtag.`name`
+      FROM post
+      LEFT JOIN post_tags ON post.post_id = post_tags.post_id
+      LEFT JOIN hashtag ON hashtag.hashtag_id = post_tags.hashtag_id
+      LEFT JOIN user ON user.user_id = post.user_id
+      WHERE post.created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)
+      GROUP BY hashtag.`name`
+      ORDER BY count DESC 
+      LIMIT 5"
+
+    result = client.query(query)
+
+    result
+  end
 end
