@@ -2,66 +2,88 @@ require_relative '../../models/hashtag'
 
 describe Hashtag do
   before :each do
-    @stub_client = double()
-    @hashtag = Hashtag.new(hashtag_id: 1, name: 'gamemulu', createdAt: '2021-08-15 00:51:03')
-    @response = {
+    @hashtag = Hashtag.new(
+      hashtag_id: 1,
+      name: 'Main #game mulu',
+      created_at: '2021-08-21 10:19:23'
+    )
+
+    @expected_result = {
       'hashtag_id' => 1,
-      'name' => 'gamemulu',
-      'createdAt' => '2021-08-15 00:51:03'
+      'name' => 'Main #game mulu',
+      'created_at' => '2021-08-21 10:19:23'
     }
-    allow(Mysql2::Client).to receive(:new).and_return(@stub_client)
+
+    @mock = double
+    allow(Mysql2::Client).to receive(:new).and_return(@mock)
   end
-
-  context 'valid' do
-      context 'given valid params' do
-          it 'should return true' do
-              expect(@hashtag.valid?).to eq(true)
-          end
-      end
-  end
-
-  context 'get hashtag id' do
-    it 'should return hashtag id search by name' do
-        stub_query = "SELECT hashtag_id FROM hashtag WHERE hashtag.`name` LIKE '%#{@hashtag.name}%'"
-        expect(@stub_client).to receive(:query).with(stub_query).and_return(@response['hashtag_id'])
-
-        @hashtag.get_hashtag_id
+  describe '.initialize' do
+    it 'cannot be nil' do
+      hashtag_data = Hashtag.new(
+        hashtag_id: 1,
+        name: '#game'
+      )
+      expect(hashtag_data).not_to be_nil
     end
   end
 
-  context 'post' do
-    describe 'given valid params' do
+  describe '#valid?' do
+    context 'assign with valid params' do
+      it 'should return true' do
+        hashtag_data = Hashtag.new(
+          hashtag_id: 1,
+          name: '#game'
+        )
+        expect(hashtag_data.valid?).to eq(true)
+      end
+    end
+  end
+
+  describe '#find_hashtag' do
+    it 'should return choosen hashtag data' do
+
+      query = "SELECT hashtag_id FROM hashtag WHERE hashtag.`name` LIKE '%#{@hashtag.name}%'"
+
+      expect(@mock).to receive(:query).with(query).and_return(@expected_result['hashtag_id'])
+
+      @hashtag.find_hashtag
+    end
+  end
+
+  describe '#create_hashtag' do
+    context 'when assign with valid params' do
       it 'should create hashtag' do
-        stub_query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
-        stub_query_last_insert = 'SET @id = LAST_INSERT_ID();'
-        stub_query_response = 'SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id'
-        expect(@stub_client).to receive(:query).with(stub_query)
-        expect(@stub_client).to receive(:query).with(stub_query_last_insert)
-        expect(@stub_client).to receive(:query).with(stub_query_response).and_return([{}])
+        query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
+        query_lastid = "SET @id = LAST_INSERT_ID();"
+        query_response = "SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id"
 
-        @hashtag.post
+        expect(@mock).to receive(:query).with(query)
+        expect(@mock).to receive(:query).with(query_lastid)
+        expect(@mock).to receive(:query).with(query_response).and_return([{}])
+
+        @hashtag.create_hashtag
       end
     end
   end
 
-  context 'post hashtag' do
-    describe 'given valid params' do
-      it 'should create post hastag' do
-        stub_query_post = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
-        stub_query_last_insert_post = 'SET @id = LAST_INSERT_ID();'
-        stub_query_response_post = 'SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id'
-        stub_query_post_hashtag = "INSERT INTO post_tags (hashtag_id,post_id) VALUES (#{@hashtag.hashtag_id},1)"
+  describe '#save_hashtag' do
+    context 'when assign with valid params' do
+      it 'does save thread' do
+      query = "INSERT INTO hashtag (name) VALUES ('#{@hashtag.name[0]}')"
+      query_lastid = "SET @id = LAST_INSERT_ID();"
+      query_selectid = "SELECT hashtag_id FROM hashtag WHERE hashtag_id = @id"
+      query_response = "INSERT INTO post_tags (hashtag_id,post_id) VALUES (#{@hashtag.hashtag_id},1)"
 
-        response = [{
-          'hashtag_id' => 1
-        }]
+      expected_result = [{
+        'hashtag_id' => 1
+      }]
 
-        expect(@stub_client).to receive(:query).with(stub_query_post)
-        expect(@stub_client).to receive(:query).with(stub_query_last_insert_post)
-        expect(@stub_client).to receive(:query).with(stub_query_response_post).and_return(response)
-        expect(@stub_client).to receive(:query).with(stub_query_post_hashtag)
+      expect(@mock).to receive(:query).with(query)
+      expect(@mock).to receive(:query).with(query_lastid)
+      expect(@mock).to receive(:query).with(query_selectid).and_return(expected_result)
+      expect(@mock).to receive(:query).with(query_response)
 
-        @hashtag.post_hashtag(1)
+      @hashtag.save_hashtag(1)
       end
     end
   end
