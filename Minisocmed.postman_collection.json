@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "320fb04e-9be8-4f0e-8b87-58b66e83f218",
+		"name": "Minisocmed",
+		"description": "This collection contains documentation for mini personal social media. ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "mamamiru",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "mahaa@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "bio",
+									"value": "au ah gelap",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/api/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						},
+						"description": "Create new user data"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "86",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Valorant adalah #game #Game",
+									"type": "text"
+								},
+								{
+									"key": "attachment",
+									"type": "file",
+									"src": "/C:/Users/mihaamiharu/Downloads/Zoom_background_prison_cell-1200x675.jpg"
+								},
+								{
+									"key": "parent_id",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4567/api/post/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"api",
+								"post",
+								"create"
+							]
+						},
+						"description": "need user_id, caption, attachment, and tag id"
+					},
+					"response": []
+				}
+			],
+			"description": "Create Post"
+		},
+		{
+			"name": "Hashtag",
+			"item": [
+				{
+					"name": "Find Hashtag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4567/api/hashtag/details?name=game",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"api",
+								"hashtag",
+								"details"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "game"
+								}
+							]
+						},
+						"description": "Find Hashtag"
+					},
+					"response": []
+				},
+				{
+					"name": "Find Trending",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4567/api/hashtag/trending",
+							"host": [
+								"localhost"
+							],
+							"port": "4567",
+							"path": [
+								"api",
+								"hashtag",
+								"trending"
+							]
+						},
+						"description": "Find Trending Topic"
+					},
+					"response": []
+				}
+			],
+			"description": "For Hashtag Route"
+		}
+	]
+}
