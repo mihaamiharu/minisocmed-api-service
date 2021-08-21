@@ -15,7 +15,7 @@ get '/api/' do
 end
 
 post '/api/user/register' do
-  controller = UsersController.new
+  controller = UserController.new
   response = controller.create_new_user(params)
   status response['status']
   return response.to_json
