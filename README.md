@@ -3,7 +3,8 @@
 This repository is a Final Project from Yayasan Anak Bangsa Bisa.
 
 ## Problem Description
-Develop an API-only application that is used for Private Social media, this application is only used by interns in a company so we cannot use existing public social media.
+Develop an API-only application that is used for Private Social media, this application is only used by interns in a company so we cannot use existing public social media. 
+[Details Scope](spec.md)
 
 
 ## Prerequisites to run the apps locally
