@@ -20,17 +20,17 @@ You need to have a Virtual Machine to Run Linux, or I recommend you to use WSL a
 ## Installation 
 1. Fork or clone this repository to your local machine
 2. Move to the root directory of this folder
-3. Install Dependencies using **bundle install**
-4. Change **.env** with your desired choice
-5. Run **source .env**
-6. Run the apps with **ruby main.rb**
+3. Install Dependencies using ```**bundle install**```
+4. Change ```**.env**``` with your desired choice
+5. Run ```**source .env**```
+6. Run the apps with ```**ruby main.rb**```
 
 ## Run Unit Testing
 1. Move to the root folder of this directory
-2. run rspec to run all test once.
-3. run rspec -f d if you want to see the detailed running test.
+2. run ```rspec``` to run all test once.
+3. run ```rspec -f d``` if you want to see the detailed running test.
 
-If you want to run rspec spec/specific files to run
+If you want to run ```rspec spec/specific files``` to run individual testing
 
 ## Database Scheme
 ![Image of DB Scheme](Scheme_ERD.png)
