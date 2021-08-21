@@ -33,7 +33,7 @@ You need to have a Virtual Machine to Run Linux, or I recommend you to use WSL a
 If you want to run rspec spec/specific files to run
 
 ## Database Scheme
-[DB SCHEME](Scheme_ERD.png)
+![Image of DB Scheme](Scheme_ERD.png)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
