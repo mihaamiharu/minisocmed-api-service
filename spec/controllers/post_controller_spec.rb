@@ -15,7 +15,7 @@ describe PostController do
             'post_id' => 1,
             'user_id' => 1,
             'caption' => 'Main #game mulu',
-            'attachment' => 'image.jpeg',
+            'attachment' => 'image.jpg',
             'tag_id' => nil,
             'created_at' => '2021-08-17 07:00:13'
           }]
@@ -37,7 +37,7 @@ describe PostController do
         allow(mock).to receive(:find_post).and_return(expected_response['data'])
         allow(mock).to receive(:posts).and_return(201)
 
-        allow(mock_attachment).to receive('[]').with('filename').and_return('image.jpeg')
+        allow(mock_attachment).to receive('[]').with('filename').and_return('image.jpg')
         allow(mock_attachment).to receive(:key?).with('filename').and_return(true)
 
         mock_file = double
@@ -45,7 +45,7 @@ describe PostController do
         expect(mock_file).to receive(:read)
         allow(mock_attachment).to receive('[]').with('tempfile').and_return(mock_file)
 
-        allow(@File).to receive(:open) { |&block| block.call(file) }
+        allow(File).to receive(:open) { |&block| block.call(mock_file) }
         allow(@posts).to receive(:to_hash).and_return({})
 
         result = @controller.create_post(post_data)
@@ -71,6 +71,37 @@ describe PostController do
 
         result = @controller.create_post(post_data)
         expect(result).to eq(expected_response)
+      end
+
+      it 'should not save file when attachment is nil' do
+        mock_attachment = double
+        allow(mock_attachment).to receive([]).with('filename').and_return('image.jpeg')
+        allow(mock_attachment).to receive(:key?).with('filename').and_return(false)
+
+        mock_file = double
+        allow(mock_file).to receive(:read)
+        allow(mock_attachment).to receive('[]').with('tempfile').and_return(mock_file)
+
+        allow(File).to receive(:open) { |&block| block.call(mock_file) }
+        allow(@posts).to receive(:to_hash).and_return({})
+
+        post_data = {
+          'post_id' => 1,
+          'user_id' => 1,
+          'caption' => 'Main #game mulu',
+          'attachment' => mock_attachment,
+          'tag_id' => nil,
+          'created_at' => '2021-08-17 07:00:13'
+        }
+
+        expected_response = {
+          'message' => 'Failed',
+          'status' => 401,
+          'method' => 'POST'
+        }
+
+        result = @controller.create_post(params)
+        expect(result).to eq(response)
       end
     end
   end
