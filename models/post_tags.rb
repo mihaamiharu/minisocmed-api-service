@@ -6,4 +6,16 @@ class PostTags
   def initialize(params)
     @name = params[:name]
   end
+
+  def find_post_contain_hashtag
+    client = create_db_client
+    find_post_contain_hashtag = client.query("SELECT post.post_id, user.username, post.caption, post.attachment, post.tag_id, post.created_at, hashtag.`name`
+      FROM post
+      LEFT JOIN post_tags ON post.post_id = post_tags.post_id
+      LEFT JOIN hashtag ON hashtag.hashtag_id = post_tags.hashtag_id
+      LEFT JOIN user ON user.user_id = post.user_id
+      WHERE hashtag.`name` LIKE '%#{@name}%'")
+
+      find_post_contain_hashtag
+  end
 end
