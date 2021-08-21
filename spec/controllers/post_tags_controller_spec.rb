@@ -1,7 +1,7 @@
 require_relative '../../controllers/post_tags_controller'
 
 describe PostTagsController do
-  describe 'search post hashtag' do
+  describe '#find_post_hashtag' do
     it 'should return post that have hashtag' do
       hashtag = {
         'name' => 'game'
@@ -52,5 +52,23 @@ describe PostTagsController do
       result = controller.find_post_tags(params)
       expect(result).to eq(expected_response)
     end
+  end
+
+  describe '#find_trending_hashtag' do
+     it 'should show top 5 trending hashtag' do
+      expected_response = {
+        'message' => 'Success',
+        'status' => 200,
+        'method' => 'POST',
+        'data' => nil
+      }
+
+      mock = double
+      controller = PostTagsController.new
+      allow(mock).to receive(:each)
+      allow(PostTags).to receive(:list_trending_hashtag).and_return(mock)
+      result = controller.find_trending_hashtag
+      expect(result).to eq(expected_response)
+     end
   end
 end

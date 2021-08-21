@@ -23,6 +23,16 @@ class PostTagsController
         'data' => array
       }
     end
-    
+  end
+
+  def find_trending_hashtag
+    array = []
+    post_tags = PostTags.list_trending_hashtag
+    {
+      'message' => 'Success',
+      'status' => 200,
+      'method' => 'POST',
+      'data' => post_tags.each
+    }
   end
 end
