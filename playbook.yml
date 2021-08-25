@@ -1,0 +1,78 @@
+- hosts: all
+  tasks:
+    - name: Updating repositories
+      become: yes
+      apt:
+        update_cache: yes
+    - name: Upgrading packages
+      become: yes
+      apt:
+        name: "*"
+        state: latest
+    - name: Installing required linux package required in this project
+      become: yes
+      apt:
+        autoclean: yes
+        autoremove: yes
+        install-recommends: no
+        name:
+          - curl
+          - autoconf
+          - bison
+          - build-essential
+          - libssl-dev
+          - libyaml-dev
+          - libreadline6-dev
+          - zlib1g-dev
+          - libncurses5-dev
+          - libffi-dev
+          - libgdbm6
+          - libgdbm-dev
+          - libdb-dev
+          - mysql-server
+          - libmysqlclient-dev
+          - python3-mysqldb
+    - name: Install rbenv
+      shell: curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+    - name: Install ruby version 3.0.1
+      shell: /home/gbe01051/.rbenv/bin/rbenv install 3.0.1 -s
+    - name: setting ruby version 3.0.1 as global
+      shell: /home/gbe01051/.rbenv/bin/rbenv global 3.0.1
+    - name: Install gem sinatra and mysql2
+      shell: /home/gbe01051/.rbenv/shims/gem install sinatra mysql2
+    - name: Create database 'minisocmed_prod'
+      mysql_db:
+        login_user: gbe01051
+        login_password: gbe01051
+        name: minisocmed_prod
+    - name: Cloning 'repo'
+      git:
+        force: yes
+        dest: /home/gbe01051/
+        repo: https://github.com/mihaamiharu/minisocmed-api-service.git
+    - name: Importing 'db_scheme.sql'
+      mysql_db:
+        login_user: gbe01051
+        login_password: gbe01051
+        name: minisocmed_prod
+        state: import
+        target: /home/gbe01051/minisocmed-api-service/db_scheme.sql
+    - name: Move 'sinatra.service' file to '/etc/systemd/system/'
+      become: yes
+      shell:
+        cmd: mv /home/gbe01051/sinatra.service /etc/systemd/system/
+    - name: Reload Daemon for Sinatra Service
+      become: yes
+      systemd:
+        daemon-reload: true
+    - name: Enabling sinatra application
+      become: yes
+      systemd:
+        enabled: yes
+        name: sinatra
+        force: true
+    - name: Starting sinatra application
+      become: yes
+      systemd:
+        name: sinatra
+        state: started
