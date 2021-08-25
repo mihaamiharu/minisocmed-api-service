@@ -5,7 +5,7 @@ This repository is a Final Project from Yayasan Anak Bangsa Bisa.
 ## Problem Description
 Develop an API-only application that is used for Private Social media, this application is only used by interns in a company so we cannot use existing public social media. 
 
-[Details Scope](spec.md)
+[Details Scope](scope.md)
 
 
 ## Prerequisites to run the apps locally
@@ -33,6 +33,7 @@ mysql -u [username] -p desiredname < db_scheme.sql
 4. Change ```**.env**``` with your desired choice
 5. Run ```**source .env**```
 6. Run the apps with ```**ruby main.rb**```
+7. Open your browser and go to localhost:4567/api/
 
 ## Run Unit Testing
 1. Move to the root folder of this directory
