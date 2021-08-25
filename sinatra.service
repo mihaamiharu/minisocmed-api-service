@@ -1,0 +1,15 @@
+[Unit]
+Description=Sinatra application
+
+[Service]
+User=gbe01051
+WorkingDirectory=/homegbe01051/socmed/Temporary
+ExecStart=/home/gbe01051/.rbenv/shims/ruby main.rb -o 0.0.0.0 -p 4567
+Restart=on-failure
+Environment="DB_HOST=localhost"
+Environment="DB_USERNAME=gbe01051"
+Environment="DB_PASSWORD=Kmzway87@@@"
+Environment="DB_NAME=minisocmed_prod"
+
+[Install]
+WantedBy=multi-user.target
