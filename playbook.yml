@@ -40,7 +40,7 @@
       shell: /home/gbe01051/.rbenv/bin/rbenv global 3.0.1
     - name: Install gem sinatra and mysql2
       shell: /home/gbe01051/.rbenv/shims/gem install sinatra mysql2
-    - name: Create database 'minisocmed_prod'
+    - name: Skip User Creation Create database 'minisocmed_prod'
       mysql_db:
         login_user: gbe01051
         login_password: gbe01051
